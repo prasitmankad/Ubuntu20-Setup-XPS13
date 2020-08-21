@@ -201,7 +201,7 @@ rm google-chrome-stable_current_amd64.deb
 #sudo flatpak install discord -y
 
 ## Multimedia
-sudo apt install -y gimp
+# sudo apt install -y gimp
 # sudo flatpak install spotify -y
 
 ## Games
