@@ -1,7 +1,7 @@
 # Ubuntu Focal Fossa 20.04 Setup on XPS 13 9300
 
 ```bash
-wget https://raw.githubusercontent.com/jules-ch/Ubuntu20-Setup-XPS13/master/setup.sh && sudo chmod +x setup.sh && ./setup.sh
+wget https://raw.githubusercontent.com/prasitmankad/Ubuntu20-Setup-XPS13/master/setup.sh && sudo chmod +x setup.sh && ./setup.sh
 ```
 
 ## Prerequisistes
