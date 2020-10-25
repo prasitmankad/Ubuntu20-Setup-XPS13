@@ -1,12 +1,14 @@
 #!/bin/bash
 set -x 
+echo "🖥️ Remove Bionic Repos"
 
 sudo rm -f /etc/apt/sources.list.d/*bionic* # remove bionic repositories
 sudo apt install gnome-tweak-tool
 sudo apt purge ubuntu-web-launchers
 
-# Add dell drivers for focal fossa
 
+# Add dell drivers for focal fossa
+echo "🖥️ Dell Drivers for Ubuntu Focal Fossa"
 sudo sh -c 'cat > /etc/apt/sources.list.d/focal-dell.list << EOF
 deb http://dell.archive.canonical.com/updates/ focal-dell public
 # deb-src http://dell.archive.canonical.com/updates/ focal-dell public
@@ -32,11 +34,29 @@ gnome-tweak-tool spell synaptic -y -qq
 # Install drivers
 sudo apt install oem-somerville-melisa-meta libfprint-2-tod1-goodix oem-somerville-meta tlp-config -y
 
-# Install fonts
-sudo apt install fonts-firacode fonts-open-sans -y -qq
+echo "🖥️ Remove Crap Packages"
+# Remove packages:
+sudo apt remove rhythmbox -y -q
+sudo apt remove cheese -y -q
+sudo apt remove cheese-common -y -q
+sudo apt remove libcheese-gtk25 -y -q
+sudo apt remove gnome-mahjongg -y -q
+sudo apt remove gnome-mines -y -q
 
-gsettings set org.gnome.desktop.interface font-name 'Open Sans 12'
-gsettings set org.gnome.desktop.interface monospace-font-name 'Fira Code 13'
+# Remove snaps and Add Flatpak support:
+sudo snap remove gnome-characters gnome-calculator gnome-system-monitor
+sudo apt install gnome-characters gnome-calculator gnome-system-monitor \
+gnome-software-plugin-flatpak -y
+
+sudo apt purge snapd
+
+sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+# Install fonts
+sudo apt install fonts-roboto -y -qq
+
+gsettings set org.gnome.desktop.interface font-name 'Roboto Regular 11'
+gsettings set org.gnome.desktop.interface monospace-font-name 'Ubuntu Mono Regular 12'
 
 # Install fusuma for handling gestures
 sudo gpasswd -a $USER input
@@ -55,22 +75,6 @@ sudo apt update -qq
   echo "Skipping Install of Howdy";;
   * ) echo "invalid";;
 esac
-
-# Remove packages:
-sudo apt remove rhythmbox -y -q
-sudo apt remove cheese -y -q
-sudo apt remove libcheese-gtk25 -y -q
-sudo apt remove gnome-mahjongg -y -q
-sudo apt remove gnome-mines -y -q
-
-# Remove snaps and Add Flatpak support:
-sudo snap remove gnome-characters gnome-calculator gnome-system-monitor
-sudo apt install gnome-characters gnome-calculator gnome-system-monitor \
-gnome-software-plugin-flatpak -y
-
-sudo apt purge snapd
-
-sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 # Setup GNOME material shell
 # git clone https://github.com/PapyElGringo/material-shell.git ~/.local/share/gnome-shell/extensions/material-shell@papyelgringo
@@ -105,9 +109,9 @@ gsettings set org.gnome.shell.extensions.user-theme name "Plata-Noir-Compact"
 gsettings set org.gnome.desktop.interface clock-show-weekday true
 gsettings set org.gnome.desktop.interface show-battery-percentage true
 gsettings set org.gnome.desktop.interface clock-show-seconds=true
-gsettings set org.gnome.desktop.interface document-font-name='Roboto Medium 11'
-gsettings set org.gnome.desktop.interface font-name='Roboto Medium 11'
-gsettings set org.gnome.desktop.interface monospace-font-name='Fira Code 12'
+gsettings set org.gnome.desktop.interface document-font-name='Roboto Regular 11'
+gsettings set org.gnome.desktop.interface font-name='Roboto Regular 11'
+gsettings set org.gnome.desktop.interface monospace-font-name='Ubuntu Mono Regular 12'
 gsettings set org.gnome.desktop.media-handling autorun-never=true
 
 gsettings set org.gnome.desktop.peripherals.mouse accel-profile='adaptive'
@@ -168,12 +172,18 @@ sudo groupadd docker
 sudo usermod -aG docker $USER
 
 ## Post installation for code (sensible defaults)
-
 code --install-extension ms-python.python
 code --install-extension visualstudioexptteam.vscodeintellicode
 code --install-extension eamodio.gitlens
-
-#code --install-extension ms-azuretools.vscode-docker
+code --install-extension ms-azuretools.vscode-docker
+code --install-extension coenraads.bracket-pair-colorizer
+code --install-extension equinusocio.vsc-community-material-theme
+code --install-extension dbaeumer.vscode-eslint
+code --install-extension equinusocio.vsc-material-theme
+code --install-extension equinusocio.vsc-material-theme-icons
+code --install-extension eg2.vscode-npm-script
+code --install-extension esbenp.prettier-vscode
+code --install-extension shan.code-settings-sync
 
 sudo flatpak install postman -y
 
@@ -191,7 +201,7 @@ case "$choice" in
   * ) echo "invalid";;
 esac
 
-echo "Installing Chrome" # Because chrome-gnome-shell to install new extensions did not work with chromium
+echo "🖥️ Installing Chrome" # Because chrome-gnome-shell to install new extensions did not work with chromium
 
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 sudo apt install -y ./google-chrome-stable_current_amd64.deb
@@ -209,10 +219,44 @@ rm google-chrome-stable_current_amd64.deb
 
 ## Other packages
 #virtualbox
+
+#gimp
+#inkscape
+#gnome clocks
+#digikam
+#msteams
+#obsstudio
+#timeshift
+#ao (microsoft anydo)
+#xournal++ --  PDF editor
+#vlc
+#synaptic package manager
+
 #adb
+sudo apt install adb -y
 #sudo apt install npm:all
 
-# qbitrorrent
+#csvkit - json export / import to csv
+sudo apt install csvkit -y
+
+#deja-dup - backup tool
+sudo apt install deja-dup -y
+
+#fish
+#java
+sudo apt install java-common -y
+sudo apt install javascript-common -y
+sudo apt-get install -f
+
+#jq - json building & parsing and querying
+#qbitrorrent
+#scrcpy
+sudp apt-install scrcpy
+
+#tor
+sudo add-apt-repository ppa:micahflee/ppa
+sudo apt update 
+sudo apt install torbrowser-launcher
 
 # Gotta reboot now:
 sudo apt update -qq && sudo apt upgrade -y && sudo apt autoremove -y
