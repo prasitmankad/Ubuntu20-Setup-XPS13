@@ -1,13 +1,9 @@
 #!/bin/bash
 set -x 
+
 echo "🖥️ Remove Bionic Repos"
-
 sudo rm -f /etc/apt/sources.list.d/*bionic* # remove bionic repositories
-sudo apt install gnome-tweak-tool
-sudo apt purge ubuntu-web-launchers
 
-
-# Add dell drivers for focal fossa
 echo "🖥️ Dell Drivers for Ubuntu Focal Fossa"
 sudo sh -c 'cat > /etc/apt/sources.list.d/focal-dell.list << EOF
 deb http://dell.archive.canonical.com/updates/ focal-dell public
@@ -23,13 +19,17 @@ deb http://dell.archive.canonical.com/updates/ focal-somerville-melisa public
 # deb-src http://dell.archive.canonical.com/updates focal-somerville-melisa public
 EOF'
 
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F9FDA6BED73CDC22
+
 sudo apt update
+sudo apt install gnome-tweak-tool
+sudo apt purge ubuntu-web-launchers
 
 sudo apt install git htop lame net-tools flatpak npm \
 openssh-server sshfs nano adb \
 vlc gthumb gnome-tweaks ubuntu-restricted-extras \
-python-is-python3 ffmpeg ufw \
-gnome-tweak-tool spell synaptic -y -qq
+ffmpeg ufw \
+gnome-tweak-tool spell synaptic -y -q
 
 # Install drivers
 sudo apt install oem-somerville-melisa-meta libfprint-2-tod1-goodix oem-somerville-meta tlp-config -y
@@ -138,7 +138,9 @@ fi
 # Setup Development tools
 
 # Update python essentials
+sudo apt install python3 python-is-python3 -y
 sudo python3 -m pip install -U pip setuptools wheel
+python -m pip install --user black
 
 # Add build essentials
 sudo apt install build-essential -y
@@ -207,18 +209,7 @@ wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 sudo apt install -y ./google-chrome-stable_current_amd64.deb
 rm google-chrome-stable_current_amd64.deb
 
-## Chat
-#sudo flatpak install discord -y
-
-## Multimedia
-# sudo apt install -y gimp
-# sudo flatpak install spotify -y
-
-## Games
-# sudo apt install -y steam-installer
-
-## Other packages
-#virtualbox
+sudo apt update
 
 #gimp
 #inkscape
@@ -229,27 +220,19 @@ rm google-chrome-stable_current_amd64.deb
 #timeshift
 #ao (microsoft anydo)
 #xournal++ --  PDF editor
-#vlc
-#synaptic package manager
-
-#adb
-sudo apt install adb -y
-#sudo apt install npm:all
-
+#jq - json building & parsing and querying
 #csvkit - json export / import to csv
 sudo apt install csvkit -y
-
 #deja-dup - backup tool
 sudo apt install deja-dup -y
-
-#fish
-#java
+sudo apt install guake -y
 sudo apt install java-common -y
 sudo apt install javascript-common -y
 sudo apt-get install -f
+sudo apt install qbittorrent
+sudo apt install xournal
+sudo apt install gnome-clocks
 
-#jq - json building & parsing and querying
-#qbitrorrent
 #scrcpy
 sudp apt-install scrcpy
 
