@@ -229,12 +229,13 @@ sudo apt install guake -y
 sudo apt install java-common -y
 sudo apt install javascript-common -y
 sudo apt-get install -f
-sudo apt install qbittorrent
-sudo apt install xournal
-sudo apt install gnome-clocks
-
-#scrcpy
-sudp apt-install scrcpy
+sudo apt install qbittorrent -y
+sudo apt install xournal -y
+sudo apt install gnome-clocks -y
+sudo apt install calc -y
+sudo apt install fish -y
+sudo apt install jq -y
+sudo apt-install scrcpy -y
 
 #tor
 sudo add-apt-repository ppa:micahflee/ppa
