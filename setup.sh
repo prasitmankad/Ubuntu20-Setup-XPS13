@@ -211,6 +211,11 @@ rm google-chrome-stable_current_amd64.deb
 
 sudo apt update
 
+wget https://download2.interactivebrokers.com/installers/tws/latest-standalone/tws-latest-standalone-linux-x64.sh
+chmod u+x tws-latest-standalone-linux-x64.sh
+./tws-latest-standalone-linux-x64.sh
+
+
 #gimp
 #inkscape
 #gnome clocks
