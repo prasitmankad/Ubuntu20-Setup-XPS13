@@ -230,6 +230,30 @@ wget https://download2.interactivebrokers.com/installers/tws/latest-standalone/t
 chmod u+x tws-latest-standalone-linux-x64.sh
 ./tws-latest-standalone-linux-x64.sh
 
+#wget https://download.mozilla.org/?product=firefox-aurora-latest-ssl&os=linux64&lang=en-US
+#sudo cp -rp firefox-83.0b10.tar.bz2 /opt
+#sudo rm -rf firefox-83.0b10.tar.bz2
+#cd ~
+#cd /opt
+#sudo tar xjf /opt/firefox-83.0b10.tar.bz2
+#sudo rm -rf /opt/firefox-83.0b10.tar.bz2
+#sudo chown -R $USER /opt/firefox
+#nano ~/.bashrc
+#Step 13: Copy and paste this line that sets the path for the executable file: export PATH=/opt/firefox/firefox:$PATH
+
+#create desktop shortcut
+#cat > ~/.local/share/applications/firefoxDeveloperEdition.desktop <<EOL
+#[Desktop Entry]
+#Encoding=UTF-8
+#Name=Firefox Developer Edition
+#Exec=/opt/firefox/firefox
+#Icon=/opt/firefox/browser/chrome/icons/default/default128.png
+#Terminal=false
+#Type=Application
+#Categories=Network;WebBrowser;Favorite;
+#MimeType=text/html;text/xml;application/xhtml_xml;x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/ftp; X-Ayatana-Desktop-Shortcuts=NewWindow;NewIncognitos;
+#EOL
+
 
 echo "🖥️ Remove Crap Packages"
 # Remove packages:
@@ -240,8 +264,8 @@ sudo apt remove libcheese-gtk25 -y -q
 sudo apt remove gnome-mahjongg -y -q
 sudo apt remove gnome-mines -y -q
 sudo apt remove thunderbird -y -q
-gnome-shell-extension-desktop-icons
-gnome-todo 
+sudo apt remove gnome-shell-extension-desktop-icons -y -q
+sudo apt remove gnome-todo -y -q
 
 sudo apt autoremove -y
 
