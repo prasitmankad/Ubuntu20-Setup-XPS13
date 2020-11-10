@@ -34,15 +34,6 @@ gnome-tweak-tool spell synaptic -y -q
 # Install drivers
 sudo apt install oem-somerville-melisa-meta libfprint-2-tod1-goodix oem-somerville-meta tlp-config -y
 
-echo "🖥️ Remove Crap Packages"
-# Remove packages:
-sudo apt remove rhythmbox -y -q
-sudo apt remove cheese -y -q
-sudo apt remove cheese-common -y -q
-sudo apt remove libcheese-gtk25 -y -q
-sudo apt remove gnome-mahjongg -y -q
-sudo apt remove gnome-mines -y -q
-
 # Remove snaps and Add Flatpak support:
 sudo snap remove gnome-characters gnome-calculator gnome-system-monitor
 sudo apt install gnome-characters gnome-calculator gnome-system-monitor \
@@ -160,7 +151,6 @@ curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /tmp/pa
 sudo install -o root -g root -m 644 /tmp/packages.microsoft.gpg /usr/share/keyrings/
 sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
 
-
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository \
    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
@@ -203,11 +193,36 @@ case "$choice" in
   * ) echo "invalid";;
 esac
 
-echo "🖥️ Installing Chrome" # Because chrome-gnome-shell to install new extensions did not work with chromium
+#jq - json building & parsing and querying
+#csvkit - json export / import to csv
+sudo apt install csvkit -y
+sudo apt install timeshift -y
+#sudo apt install deja-dup -y
+sudo apt install guake -y
+sudo apt install java-common -y
+sudo apt install javascript-common -y
+sudo apt install qbittorrent -y
+#sudo apt install xournal++ -y
+sudo apt install gnome-clocks -y
+sudo apt install calc -y
+sudo apt install fish -y
+sudo apt install jq -y
+sudo apt install scrcpy -y
+sudo apt install virtualbox -y
+sudo apt install virtualbox-guest-additions-iso -y
+sudo apt-get install -f
 
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-sudo apt install -y ./google-chrome-stable_current_amd64.deb
-rm google-chrome-stable_current_amd64.deb
+sudo add-apt-repository ppa:micahflee/ppa
+sudo apt update 
+sudo apt install torbrowser-launcher
+
+echo "🖥️ Installing Edge"
+curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
+sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-dev.list'
+sudo rm microsoft.gpg
+sudo apt update
+sudo apt install microsoft-edge-dev
 
 sudo apt update
 
@@ -216,36 +231,23 @@ chmod u+x tws-latest-standalone-linux-x64.sh
 ./tws-latest-standalone-linux-x64.sh
 
 
-#gimp
-#inkscape
-#gnome clocks
-#digikam
-#msteams
-#obsstudio
-#timeshift
-#ao (microsoft anydo)
-#xournal++ --  PDF editor
-#jq - json building & parsing and querying
-#csvkit - json export / import to csv
-sudo apt install csvkit -y
-#deja-dup - backup tool
-sudo apt install deja-dup -y
-sudo apt install guake -y
-sudo apt install java-common -y
-sudo apt install javascript-common -y
-sudo apt-get install -f
-sudo apt install qbittorrent -y
-sudo apt install xournal -y
-sudo apt install gnome-clocks -y
-sudo apt install calc -y
-sudo apt install fish -y
-sudo apt install jq -y
-sudo apt-install scrcpy -y
+echo "🖥️ Remove Crap Packages"
+# Remove packages:
+sudo apt remove rhythmbox -y -q
+sudo apt remove cheese -y -q
+sudo apt remove cheese-common -y -q
+sudo apt remove libcheese-gtk25 -y -q
+sudo apt remove gnome-mahjongg -y -q
+sudo apt remove gnome-mines -y -q
+sudo apt remove thunderbird -y -q
+gnome-shell-extension-desktop-icons
+gnome-todo 
 
-#tor
-sudo add-apt-repository ppa:micahflee/ppa
-sudo apt update 
-sudo apt install torbrowser-launcher
+sudo apt autoremove -y
+
+#load gnome settings
+wget https://raw.githubusercontent.com/prasitmankad/xps13/master/gnome-settings-backup 
+dconf load / < gnome-settings-backup
 
 # Gotta reboot now:
 sudo apt update -qq && sudo apt upgrade -y && sudo apt autoremove -y
