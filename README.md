@@ -1,7 +1,7 @@
 # Ubuntu Focal Fossa 20.04 Setup on XPS 13 9300
 
 ```bash
-wget https://raw.githubusercontent.com/prasitmankad/Ubuntu20-Setup-XPS13/master/setup.sh && sudo chmod +x setup.sh && ./setup.sh
+wget https://raw.githubusercontent.com/prasitmankad/xps13/master/setup.sh && sudo chmod +x setup.sh && ./setup.sh
 ```
 
 ## Prerequisistes
@@ -16,8 +16,7 @@ None
 - **Icon** : [Tela](https://github.com/vinceliuice/Tela-icon-theme)
 - **Fonts** :
   - Roboto (Interface)
-  - Fira Code Retina (Mono)
-
+  
 - Drivers from dell focal repository
 - Fingerprint reader
 - [Fusuma](https://github.com/iberianpig/fusuma) for handling trackpad gestures
@@ -25,17 +24,14 @@ None
 
 
 ## Web
-
 - Chromium
-- Firefox
+- Firefox Developer Edition
 - Edge (Preview)
 
 ## Social
-
 - NONE
 
 ## Software management
-
 - gnome-software + flatpak plugin
 - Flatpak
 
@@ -45,10 +41,3 @@ None
 - Docker
 - Postman
 - Web Development (Node + Yarn) **(Optional)**
-    
-## Multimedia
-
-- Spotify
-- VLC
-- GIMP
-
