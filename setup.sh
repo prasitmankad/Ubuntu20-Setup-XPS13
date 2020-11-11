@@ -46,26 +46,15 @@ sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub
 # Install fonts
 sudo apt install fonts-roboto -y -qq
 
-gsettings set org.gnome.desktop.interface font-name 'Roboto Regular 11'
-gsettings set org.gnome.desktop.interface monospace-font-name 'Ubuntu Mono Regular 12'
-
 # Install fusuma for handling gestures
 sudo gpasswd -a $USER input
 sudo apt install libinput-tools xdotool ruby -y -qq
-sudo gem install --silent fusuma
+sudo gem install fusuma
 
 # Install Howdy for facial recognition
-read -p "Facial recognition with Howdy (y/n)?" choice
-case "$choice" in 
-  y|Y ) 
-  echo "Installing Howdy"
   sudo add-apt-repository ppa:boltgolt/howdy -y > /dev/null 2>&1
 sudo apt update -qq
-  sudo apt install howdy -y;;
-  n|N ) 
-  echo "Skipping Install of Howdy";;
-  * ) echo "invalid";;
-esac
+  sudo apt install howdy -y
 
 # Setup GNOME material shell
 # git clone https://github.com/PapyElGringo/material-shell.git ~/.local/share/gnome-shell/extensions/material-shell@papyelgringo
@@ -76,14 +65,9 @@ echo "🖥️ Customizing Desktop & Gnome Preferences"
 git clone https://github.com/vinceliuice/Tela-icon-theme.git /tmp/tela-icon-theme > /dev/null 2>&1
 /tmp/tela-icon-theme/install.sh -a
 
-gsettings set org.gnome.desktop.interface icon-theme 'Tela-grey-dark'
-
 # Add Plata-theme
 sudo add-apt-repository ppa:tista/plata-theme -y > /dev/null 2>&1
 sudo apt update -qq && sudo apt install plata-theme -y
-
-gsettings set org.gnome.desktop.interface gtk-theme "Plata-Noir-Compact"
-gsettings set org.gnome.desktop.wm.preferences theme "Plata-Noir-Compact"
 
 # Installing Canta theme
 git clone https://github.com/vinceliuice/Canta-theme.git
@@ -94,37 +78,6 @@ mkdir ~/.themes/; mv Canta-theme $_
 sudo apt install gnome-shell-extensions -y
 # sudo apt install chrome-gnome-shell
 gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com
-gsettings set org.gnome.shell.extensions.user-theme name "Plata-Noir-Compact"
-
-# Gnome Tweaks > Top Bar
-gsettings set org.gnome.desktop.interface clock-show-weekday true
-gsettings set org.gnome.desktop.interface show-battery-percentage true
-gsettings set org.gnome.desktop.interface clock-show-seconds=true
-gsettings set org.gnome.desktop.interface document-font-name='Roboto Regular 11'
-gsettings set org.gnome.desktop.interface font-name='Roboto Regular 11'
-gsettings set org.gnome.desktop.interface monospace-font-name='Ubuntu Mono Regular 12'
-gsettings set org.gnome.desktop.media-handling autorun-never=true
-
-gsettings set org.gnome.desktop.peripherals.mouse accel-profile='adaptive'
-gsettings set org.gnome.desktop.peripherals.mouse natural-scroll=false
-gsettings set org.gnome.desktop.peripherals.mouse speed=0.30000000000000004
-
-gsettings set org.gnome.desktop.peripherals.touchpad speed=0.40714285714285725
-gsettings set org.gnome.desktop.peripherals.touchpad two-finger-scrolling-enabled=true
-
-gsettings set org.gnome.desktop.sound allow-volume-above-100-percent=false
-gsettings set org.gnome.desktop.sound event-sounds=true
-gsettings set org.gnome.desktop.sound theme-name='Yaru'
-
-
-# Tweaks > Appearance
-if [[ $(lsb_release -rs) == '18.04' ]]; then 
-    cur_theme='whiteglass'
-    icon_theme='Humanity'
-else 
-    cur_theme='Yaru'
-    icon_theme='Yaru'
-fi
 
 # Setup Development tools
 
@@ -257,21 +210,49 @@ chmod u+x tws-latest-standalone-linux-x64.sh
 
 echo "🖥️ Remove Crap Packages"
 # Remove packages:
-sudo apt remove rhythmbox -y -q
-sudo apt remove cheese -y -q
-sudo apt remove cheese-common -y -q
-sudo apt remove libcheese-gtk25 -y -q
-sudo apt remove gnome-mahjongg -y -q
-sudo apt remove gnome-mines -y -q
-sudo apt remove thunderbird -y -q
-sudo apt remove gnome-shell-extension-desktop-icons -y -q
-sudo apt remove gnome-todo -y -q
+sudo apt remove rhythmbox -y
+sudo apt remove cheese -y
+sudo apt remove cheese-common -y
+sudo apt remove libcheese-gtk25 -y
+sudo apt remove gnome-mahjongg -y
+sudo apt remove gnome-mines -y
+sudo apt remove thunderbird -y
+sudo apt remove gnome-shell-extension-desktop-icons -y
+sudo apt remove gnome-todo -y
 
 sudo apt autoremove -y
 
 #load gnome settings
 wget https://raw.githubusercontent.com/prasitmankad/xps13/master/gnome-settings-backup 
 dconf load / < gnome-settings-backup
+
+#update swap file size
+#https://bogdancornianu.com/change-swap-size-in-ubuntu/
+
+# turn off existing swap
+sudo swapoff -a
+
+#Resize the swap
+sudo dd if=/dev/zero of=/swapfile bs=1G count=8
+
+#if = input file
+#of = output file
+#bs = block size
+#count = multiplier of blocks
+
+#Change permission
+sudo chmod 600 /swapfile
+
+#Make the file usable as swap
+sudo mkswap /swapfile
+
+#Activate the swap file
+sudo swapon /swapfile
+
+#Edit /etc/fstab and add the new swapfile if it isn’t already there with this statement /swapfile none swap sw 0 0
+
+#Check the amount of swap available
+grep SwapTotal /proc/meminfo
 
 # Gotta reboot now:
 sudo apt update -qq && sudo apt upgrade -y && sudo apt autoremove -y
