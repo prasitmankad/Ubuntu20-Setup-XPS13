@@ -1,50 +1,45 @@
 #!/bin/bash
-set -x 
+set -ex 
 
-echo "🖥️ Remove Bionic Repos"
-sudo rm -f /etc/apt/sources.list.d/*bionic* # remove bionic repositories
+# Ensure repositories are enabled
+sudo add-apt-repository universe
+sudo add-apt-repository multiverse
+sudo add-apt-repository restricted
 
 echo "🖥️ Dell Drivers for Ubuntu Focal Fossa"
 sudo sh -c 'cat > /etc/apt/sources.list.d/focal-dell.list << EOF
 deb http://dell.archive.canonical.com/updates/ focal-dell public
 # deb-src http://dell.archive.canonical.com/updates/ focal-dell public
-
 deb http://dell.archive.canonical.com/updates/ focal-oem public
 # deb-src http://dell.archive.canonical.com/updates/ focal-oem public
-
 deb http://dell.archive.canonical.com/updates/ focal-somerville public
 # deb-src http://dell.archive.canonical.com/updates/ focal-somerville public
-
 deb http://dell.archive.canonical.com/updates/ focal-somerville-melisa public
 # deb-src http://dell.archive.canonical.com/updates focal-somerville-melisa public
 EOF'
 
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F9FDA6BED73CDC22
-
 sudo apt update
-sudo apt install gnome-tweak-tool
-sudo apt purge ubuntu-web-launchers
 
-sudo apt install git htop lame net-tools flatpak npm \
-openssh-server sshfs nano adb \
-vlc gthumb gnome-tweaks ubuntu-restricted-extras \
-ffmpeg ufw \
-gnome-tweak-tool spell synaptic -y -q
+# Install general utilities
+sudo apt install git htop lame net-tools flatpak audacity openssh-server sshfs simplescreenrecorder nano adb vlc gthumb gnome-tweaks ubuntu-restricted-extras ffmpeg ufw gnome-tweak-tool spell synaptic -y -qq
+
+sudo apt purge ubuntu-web-launchers
 
 # Install drivers
 sudo apt install oem-somerville-melisa-meta libfprint-2-tod1-goodix oem-somerville-meta tlp-config -y
 
 # Remove snaps and Add Flatpak support:
+sudo apt remove rhythmbox -y -q
 sudo snap remove gnome-characters gnome-calculator gnome-system-monitor
-sudo apt install gnome-characters gnome-calculator gnome-system-monitor \
-gnome-software-plugin-flatpak -y
+sudo apt install gnome-characters gnome-calculator gnome-system-monitor gnome-software-plugin-flatpak -y
 
 sudo apt purge snapd
 
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 # Install fonts
-sudo apt install fonts-roboto -y -qq
+sudo apt install fonts-roboto fonts-firacode fonts-open-sans -y -qq
 
 # Install fusuma for handling gestures
 sudo gpasswd -a $USER input
@@ -62,22 +57,24 @@ sudo apt update -qq
 echo "🖥️ Customizing Desktop & Gnome Preferences"
 
 # Install Icon Theme
+[[ -d /tmp/tela-icon-theme ]] && rm -rf /tmp/tela-icon-theme
 git clone https://github.com/vinceliuice/Tela-icon-theme.git /tmp/tela-icon-theme > /dev/null 2>&1
 /tmp/tela-icon-theme/install.sh -a
+
+gsettings set org.gnome.desktop.interface icon-theme 'Tela-grey-dark'
 
 # Add Plata-theme
 sudo add-apt-repository ppa:tista/plata-theme -y > /dev/null 2>&1
 sudo apt update -qq && sudo apt install plata-theme -y
 
-# Installing Canta theme
-git clone https://github.com/vinceliuice/Canta-theme.git
-mkdir ~/.themes/; mv Canta-theme $_
-~/.themes/Canta-theme/install.sh -c dark -t standard -s standard
+gsettings set org.gnome.desktop.interface gtk-theme "Plata-Noir"
+gsettings set org.gnome.desktop.wm.preferences theme "Plata-Noir"
 
 # Enable Shell Theme
+
 sudo apt install gnome-shell-extensions -y
-# sudo apt install chrome-gnome-shell
 gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com
+gsettings set org.gnome.shell.extensions.user-theme name "Plata-Noir"
 
 # Setup Development tools
 
@@ -113,7 +110,7 @@ sudo add-apt-repository \
 sudo apt update -qq && sudo apt install docker-ce docker-ce-cli docker-compose containerd.io code -y
 
 ## Post installation for docker
-sudo groupadd docker
+sudo groupadd -f docker
 sudo usermod -aG docker $USER
 
 ## Post installation for code (sensible defaults)
