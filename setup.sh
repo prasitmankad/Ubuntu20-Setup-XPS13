@@ -24,7 +24,7 @@ sudo apt update
 # Install general utilities
 sudo apt install git htop lame net-tools flatpak audacity openssh-server sshfs simplescreenrecorder nano adb vlc gthumb gnome-tweaks ubuntu-restricted-extras ffmpeg ufw gnome-tweak-tool spell synaptic -y -qq
 
-sudo apt purge ubuntu-web-launchers
+#sudo apt purge ubuntu-web-launchers
 
 # Install drivers
 sudo apt install oem-somerville-melisa-meta libfprint-2-tod1-goodix oem-somerville-meta tlp-config -y
