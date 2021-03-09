@@ -87,7 +87,7 @@ sudo apt install build-essential -y
 # Add Java JDK LTS
 sudo apt install openjdk-11-jdk -y
 
-sudo apt remove docker docker-engine docker.io containerd runc
+sudo apt remove docker docker.io containerd runc
 sudo apt install \
     apt-transport-https \
     ca-certificates \
