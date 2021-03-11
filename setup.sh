@@ -46,7 +46,7 @@ sudo gem install fusuma
 
 # Install Howdy for facial recognition
   sudo add-apt-repository ppa:boltgolt/howdy -y > /dev/null 2>&1
-sudo apt update -qq
+  sudo apt update -qq
   sudo apt install howdy -y
 
 # Setup GNOME material shell
@@ -69,7 +69,6 @@ gsettings set org.gnome.desktop.interface gtk-theme "Plata-Noir"
 gsettings set org.gnome.desktop.wm.preferences theme "Plata-Noir"
 
 # Enable Shell Theme
-
 sudo apt install gnome-shell-extensions -y
 gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com
 gsettings set org.gnome.shell.extensions.user-theme name "Plata-Noir"
@@ -156,9 +155,6 @@ sudo apt install calc -y
 sudo apt install fish -y
 sudo apt install jq -y
 sudo apt install scrcpy -y
-sudo apt install virtualbox -y
-sudo apt install virtualbox-guest-additions-iso -y
-sudo apt-get install -f
 
 sudo add-apt-repository ppa:micahflee/ppa
 sudo apt update 
